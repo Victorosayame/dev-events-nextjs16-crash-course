@@ -4,6 +4,11 @@
 import connectDB from "../mongodb";
 import { Event, IEvent } from "@/database";
 
+//action to fetchallevents
+export const fetchAllEvents = async () => {
+  await connectDB();
+  return Event.find().sort({ createdAt: -1}).lean();
+}
 
 export const getSimilarEventsBySlug = async (slug: string): Promise<IEvent[]> => {
   try {

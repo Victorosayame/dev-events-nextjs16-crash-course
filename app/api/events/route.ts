@@ -4,12 +4,12 @@ import { Event } from "@/database";
 import connectDB from "@/lib/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import { v2 as cloudinary } from 'cloudinary';
+import { fetchAllEvents } from "@/lib/actions/event.actions";
 
 //route to create an event
 export async function POST(req: NextRequest) {
   try {
     await connectDB();
-    console.log("Connected to MongoDB");
 
     //after connecting to db,we want to get access to the form data that we are going to pass into the request
     const formData = await req.formData();
@@ -70,7 +70,7 @@ export async function GET() {
   try {
     await connectDB();
 
-    const events = await Event.find().sort({ createdAt: -1 }); // Fetch all events and sort by creation date (newest first)
+    const events = await fetchAllEvents(); // Fetch all events using the action function, which includes sorting by creation date (newest first)
 
     return NextResponse.json({ message: "Events Fetched Successfully", events }, { status: 200 });
 
