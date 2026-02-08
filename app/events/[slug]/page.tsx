@@ -4,6 +4,7 @@ import BookEvent from "@/components/BookEvent";
 import EventCards from "@/components/EventCards";
 import { IEvent } from "@/database";
 import { getSimilarEventsBySlug } from "@/lib/actions/event.actions";
+import { cacheLife } from "next/cache";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -43,6 +44,8 @@ const EventTags = ({ tags }: { tags: string[] }) => (
 )
 
 const EventDetailsPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
+  "use cache"
+  cacheLife("hours")
   const { slug } = await params;
 
   //make a request to the GET route we defined in the api/events/[slug]/route.ts file to fetch the event details using the slug, then display the event details on the page, you can use the same prompt to generate the code or you can use junie to generate the code, both will work just fine, we have tested both and they work just fine, you can choose either one of them to generate the code, we have also added comments to explain the code, you can read the comments to understand the code better, if you have any questions feel free to ask us, we are here to help you.
@@ -130,8 +133,9 @@ const EventDetailsPage = async ({ params }: { params: Promise<{ slug: string }> 
               Join {bookings} people who have already bookeded their spot!
             </p>
           ): (<p className="text-sm">Be the first to book your spot!</p>)}
-
-          <BookEvent />
+            
+            {/**step24 add eventid and slug */}
+          <BookEvent eventId={event._id} slug={event.slug} />
           
          </div>
         </aside>
